@@ -14,7 +14,7 @@
   
   <br/><br/>
   
-  🖥️ Question 🖥️<br/>
+  🖥️ Problem 🖥️<br/>
   ---
 🔗 [백준](https://www.acmicpc.net/)<br/>
 🔗 [프로그래머스](https://school.programmers.co.kr/learn/challenges?tab=all_challenges)<br/>
