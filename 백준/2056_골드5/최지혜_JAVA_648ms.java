@@ -1,9 +1,6 @@
 import java.io.*;
 import java.util.*;
-/*
- * 선행 갯수에 따라 오름차순 정렬한다. 
- * 선행해야 할 수행이 선행되었다면, finished에 끝난시간 넣어주고, 끝난시간을 저장한다.
- * 선행수행이 여러개라면, 해당 수행중 끝난시간이 가장 늦은 것에 해당 수행시간을 더한다. */
+
 public class Solution_BaekJoon_2056_작업_골드5 {
 	
 	static class Work{
@@ -12,7 +9,6 @@ public class Solution_BaekJoon_2056_작업_골드5 {
 		int preCount; // 선행되어야할 작업 갯수 
 		List<Integer> list ; //선행작업 목록
 		
-		
 		public Work(int num, int time, int preCount, List<Integer> list) {
 			super();
 			this.num = num;
@@ -20,22 +16,18 @@ public class Solution_BaekJoon_2056_작업_골드5 {
 			this.preCount = preCount;
 			this.list = list;
 		}
-
-		
 	}
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st; 
-		Queue<Work> que = new LinkedList<>();
-		
-		
+		Queue<Work> que = new LinkedList<>(); //수행해야 할 작업들
+
 		int N = Integer.parseInt(br.readLine());
 		int[] finished = new int[N+1]; //끝난시간 넣어주기 ( 0이 아니면 끝난거 ) 
 		for(int i=1; i<=N; i++) {
 			String s= br.readLine();
 			st= new StringTokenizer(s, " "); 
-			
 			List<Integer> list = new ArrayList<>(); 
 			
 			int time= Integer.parseInt(st.nextToken()); 
@@ -44,14 +36,13 @@ public class Solution_BaekJoon_2056_작업_골드5 {
 				list.add(Integer.parseInt(st.nextToken()));
 			}
 			
-			que.add(new Work(i,time,pre,list)); // 끝나는 시간 -1로 초기화 
+			que.add(new Work(i,time,pre,list));
 		}
 		
 		while(!que.isEmpty()) {
 			Work now = que.poll();
 			
 			int num = now.num; 
-//			System.out.println(num);
 			int time= now.time;
 			int preCount = now.preCount; // 선행되어야할 갯수 
 			if(preCount == 0) {
@@ -69,13 +60,10 @@ public class Solution_BaekJoon_2056_작업_골드5 {
 					isAll = false;
 					break; 
 				}
-			
 				max=  Math.max(max, finished[list.get(i)]);
-				
 			}
 			// 아직 선행이 다 안됬기 때문에, 조금 있다가 다시 수행해야 함 . 
 			if(!isAll) {
-				// preCount 그대로 넣으면, 우선순위 큐에 의해 젤 앞으로 갈수도있기 때문에 +10 
 				que.add(new Work(num, time, preCount, list)); 
 			}
 			// 선행이 다 됬음 
