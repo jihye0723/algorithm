@@ -1,0 +1,61 @@
+
+import java.lang.Math.pow
+import java.math.BigInteger
+import java.util.LinkedList
+import java.util.PriorityQueue
+import java.util.Queue
+import java.util.Stack
+import kotlin.math.*
+
+fun main() {
+    val solution = Solution()
+
+    solution.solution()
+}
+/*
+6
+2
+1 6 9 3 6 7
+ */
+
+/*
+       1. 받아서 값 정렬
+       2. 반복
+       3. 최솟값 구하기
+        */
+
+class Solution {
+
+    fun solution() {
+        /*
+       1. 받아서 값 정렬
+       2. 반복
+       3. 최솟값 구하기
+        */
+        val N = readLine()!!.toInt() // 센서 수
+        val K = readLine()!!.toInt() // 집중국 수
+        val sensors = readLine()!!.split(' ').map { it.toInt() }.sorted()
+        
+        if (N <= K) {
+            println(0)
+            return
+        }
+        
+        val dist = (0 until N-1).map {
+            sensors[it+1] - sensors[it]
+        }.sorted()
+
+        println(dist.subList(0, N-K).sum())
+
+        // 10
+        //  5
+        // 3 6 7 8 10 12 14 15 18 20
+        // size = 10
+        // 1 ~ 10, 5 경우
+        // 1-1, 2-2, 3-3, 4-4, 5-5(본인부터 마지막 인덱스까지 차이 반환)
+        // 1-1, 2-2, 3-3, 4-4, 6-5
+
+    }
+
+
+}
