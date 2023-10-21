@@ -1,0 +1,138 @@
+
+import java.lang.Math.pow
+import java.math.BigInteger
+import java.util.LinkedList
+import java.util.PriorityQueue
+import java.util.Queue
+import java.util.Stack
+import kotlin.math.*
+
+fun main() {
+    val solution = Solution()
+
+    solution.solution()
+}
+/*
+5 3 1
+0 -1 0 0 0
+-1 -1 0 1 1
+0 0 0 1 1
+ */
+
+
+
+class Solution {
+
+    val dx = listOf(1, -1, 0, 0, 0, 0)
+    val dy = listOf(0, 0, -1, 1, 0, 0)
+    val dz = listOf(0, 0, 0, 0, 1, -1)
+
+    data class Tomato(
+        val x: Int,
+        val y: Int,
+        val z: Int,
+        var day: Int
+    ): Comparable<Tomato> {
+        override fun compareTo(other: Tomato): Int {
+            return when {
+                day > other.day -> 1
+                day < other.day -> -1
+                day == other.day -> 0
+                else -> Int.MAX_VALUE
+            }
+        }
+    }
+
+
+    fun check(panel:Array<Array<IntArray>>): Boolean {
+        panel.forEachIndexed { h, it ->
+            it.forEachIndexed { n, it2 ->
+                it2.forEachIndexed { m, int ->
+                    if (int == 0) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    fun solution() {
+        val (M, N, H) = readLine()!!.split(' ').map { it.toInt() }
+        val panel = Array(H.toInt()) { Array(N.toInt()) { IntArray(M.toInt()) } } // [H][N][M]
+        repeat(H.toInt()) { h ->
+            repeat(N) { n ->
+                panel[h][n] = readLine()!!.split(' ').map { it.toInt() }.toIntArray()
+            }
+        }
+        /*
+            1. 전부 탐색
+            2. 1 스택에 넣기
+
+            4. 값 리턴
+             */
+        val stack = PriorityQueue<Tomato>()
+        val visited = Array(H.toInt()) { Array(N.toInt()) { BooleanArray(M.toInt()) } }
+        var result = -1
+        var max = 0
+
+        panel.forEachIndexed { h, it ->
+            it.forEachIndexed { n, it2 ->
+                it2.forEachIndexed { m, int ->
+                    if (int == 1) {
+                        stack.offer(Tomato(m, n, h, 0))
+                    }
+                }
+            }
+        }
+        /*
+        3. 반복
+        3.1 스택에서 하나 꺼낸다
+                3.2 방문처리
+                3.3 6방향 체크
+        3.4 0 일 때만 스택에 넣는다
+         */
+        while (check(panel) && stack.isNotEmpty()) {
+            val tomato = stack.poll()
+            val today = tomato.day
+
+            for (dir in 0 until 6) {
+                val nx = tomato.x + dx[dir]
+                val ny = tomato.y + dy[dir]
+                val nz = tomato.z + dz[dir]
+
+                if (nx !in 0 until M || ny !in 0 until N || nz !in 0 until H) continue
+                if (panel[nz][ny][nx] != 0) continue
+
+
+                panel[nz][ny][nx] = 1
+                max = max.coerceAtLeast(today+1)
+                stack.offer(Tomato(nx, ny, nz, today+1))
+            }
+//
+//            panel.forEachIndexed { h, it ->
+//                it.forEachIndexed { n, it2 ->
+//                    println(it2.toList())
+//                }
+//            }
+//            println()
+        }
+
+
+
+        panel.forEachIndexed { h, it ->
+            it.forEachIndexed { n, it2 ->
+                it2.forEachIndexed { m, int ->
+                    if (int == 0) {
+                        println(-1)
+                        return
+                    }
+                }
+            }
+        }
+
+        println(max)
+    }
+
+
+}
